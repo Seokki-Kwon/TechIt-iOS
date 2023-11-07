@@ -30,3 +30,4 @@ let mysc = MySubscript(arr:["Park", "Kim", "Lee"])
 mysc[0]
 mysc[1]
 
+

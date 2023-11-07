@@ -78,64 +78,191 @@ myMethod.random()
 
 print("end")
 
-// 프로토콜 예제01
-protocol Greeting {
-    var name: String {get}
-    func sayHello()
+//// 프로토콜 예제01
+//protocol Greeting {
+//    var name: String {get}
+//    func sayHello()
+//}
+//
+//struct Person: Greeting {
+//    var name: String
+//    func sayHello() {
+//        print("Hello, park!")
+//    }
+//}
+//
+//// 프로토콜 예제02
+//
+//protocol Shape {
+//    var area: Double { get }
+//}
+//
+//struct Circle: Shape {
+//    var radius: Double
+//    var area: Double {
+//        return .pi * radius * radius
+//    }
+//}
+//
+//// 프로토콜 예제03
+//
+//protocol Vehicle {
+//    static func makeNoise()
+//}
+//
+//struct MyCar: Vehicle {
+//    static func makeNoise() {
+//        print("부릉")
+//    }
+//}
+//
+//// 프로토콜 예제04
+//
+//protocol Countable {
+//    static var count: Int {get set}
+//}
+//
+//class MyCounter: Countable {
+//    static var count: Int = 0
+//}
+//
+//// 프로토콜 예제05
+//struct Student: Equatable {
+//    var name: String
+//    var age: Int
+//    static func == (lhs: Self, rhs: Self) -> Bool {
+//        return lhs.name == rhs.name
+//    }
+//}
+//
+//let alice = Student(name: "Alice", age: 20)
+//let bob = Student(name: "Bob", age: 21)
+//
+//print(alice == bob)
+
+// 프로토콜 예제06
+
+protocol Person {
+    var name: String { get set }
+    var age: Int { get set }
+    func introduce()
 }
 
-struct Person: Greeting {
-    var name: String
-    func sayHello() {
-        print("Hello, park!")
+class Student: Person {
+    var school: String
+    var name: String = ""
+    var age: Int = 0
+    
+    init(name: String, age: Int, school: String) {
+        self.name = name
+        self.age = age
+        self.school = school
+    }
+    
+    func introduce() {
+        print("My name is \(name) and I'm \(age) years old.")
     }
 }
 
-// 프로토콜 예제02
+// 프로토콜 예제07
 
-protocol Shape {
-    var area: Double { get }
+protocol Speaker {
+    func speak(message: String)
 }
 
-struct Circle: Shape {
-    var radius: Double
-    var area: Double {
-        return .pi * radius * radius
+class Human: Speaker {
+    func speak(message: String) {
+        print("I can't speak \(message)")
     }
 }
 
-// 프로토콜 예제03
+let human = Human()
+human.speak(message: "Hello")
 
-protocol Vehicle {
-    static func makeNoise()
+
+// 프로토콜 예제08
+
+protocol Animal {
+    var name: String { get }
+    func makeSound()
 }
 
-struct MyCar: Vehicle {
-    static func makeNoise() {
-        print("부릉")
+protocol AnimalSub: Animal {
+    var name: String { get }
+    var owner: String { get }
+    func makeSound()
+}
+
+class Dog: AnimalSub {
+    var name: String = ""
+    var owner: String = ""
+    
+    init(name: String, owner: String) {
+        self.name = name
+        self.owner = owner
+    }
+    
+    func makeSound() {
+        print("Woof!")
     }
 }
 
-// 프로토콜 예제04
+let bob = Dog(name: "Bob", owner: "Charlie")
+bob.makeSound()
 
-protocol Countable {
-    static var count: Int {get set}
+// 프로토콜 예제09
+
+
+protocol Calculable {
+    var value: Int { get set }
+    static func add(_ a: Int, _ b: Int) -> Int
 }
 
-class MyCounter: Countable {
-    static var count: Int = 0
-}
-
-// 프로토콜 예제05
-struct Student: Equatable {
-    var name: String
-    var age: Int
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        return lhs.name == rhs.name
+class Calculator: Calculable {
+    var value: Int = 0
+    static func add(_ a: Int, _ b: Int) -> Int {
+        return a + b
+    }
+    
+    static func add(_ a: Calculator, _ b: Int) -> Int {
+        return a.value + b
     }
 }
 
-let alice = Student(name: "Alice", age: 20)
-let bob = Student(name: "Bob", age: 21)
+let calc = Calculator.add(1, 2)
+Calculator.add(calc, 2)
 
-print(alice == bob)
+// 프로토콜 예제10
+
+protocol Colorful {
+    var color: String { get }
+    func describe()
+}
+
+extension Colorful {
+    func describe() {
+        print("This is \(color)")
+    }
+}
+
+enum Fruit: Colorful {
+    case apple, banana, cherry
+    var color: String {
+        switch self {
+        case.apple:
+            return "red"
+        case .banana:
+            return "yellow"
+        case .cherry:
+            return "pink"
+        }
+    }
+    mutating func describe() {
+        print("This is \(self.color)")
+    }
+}
+
+let fruit = Fruit.apple
+fruit.describe()
+Fruit.banana.describe()
+
